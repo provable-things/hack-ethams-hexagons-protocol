@@ -1,14 +1,13 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {Constants} from "./libraries/Constants.sol";
+import {Errors} from "./libraries/Errors.sol";
 
 contract UsingHexagons is Ownable {
-    uint256 public constant ID_LENS = 0;
-    uint256 public constant ID_TWITTER = 1;
-
     address public lensProtocolModule;
-    mapping (bytes32 => bool) private processedNotificationIds;
+    mapping(bytes32 => bool) private processedNotificationIds;
 
     constructor() {}
 
@@ -24,8 +23,8 @@ contract UsingHexagons is Ownable {
         bytes calldata _proof
     ) public {
         bytes32 notificationId = keccak256(abi.encode(_protocolId, _id));
-        require(processedNotificationIds[notificationId] == false, "Request already processed");
-        require(_verify(_protocolId, _proof), "Invalid proof");
+        if (processedNotificationIds[notificationId]) revert Errors.RequestAlreadyProcessed();
+        if (!_verify(_protocolId, _proof)) revert Errors.InvalidProof();
         _onNotification(_protocolId, _owner, _data);
         processedNotificationIds[notificationId] = true;
     }
@@ -37,7 +36,7 @@ contract UsingHexagons is Ownable {
     ) internal virtual {}
 
     function _verify(uint256 _protocolId, bytes calldata _proof) private view returns (bool) {
-        if (_protocolId == ID_LENS) {
+        if (_protocolId == Constants.PROTOCOL_LENS) {
             return msg.sender == lensProtocolModule;
         }
         return true;
