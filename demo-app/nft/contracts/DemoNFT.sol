@@ -1,12 +1,11 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./UsingHexagons.sol";
 
-contract DemoNFT is ERC721Enumerable, Ownable, UsingHexagons {
+contract DemoNFT is ERC721Enumerable, UsingHexagons {
     using Strings for uint256;
 
     struct Info {
@@ -14,6 +13,7 @@ contract DemoNFT is ERC721Enumerable, Ownable, UsingHexagons {
     }
 
     mapping(uint256 => Info) public tokenInfo;
+    string public baseUri;
 
     constructor() ERC721("Demo NFT", "DNFT") UsingHexagons() {}
 
@@ -30,6 +30,14 @@ contract DemoNFT is ERC721Enumerable, Ownable, UsingHexagons {
         uint256 tokenId = totalSupply();
         tokenInfo[tokenId] = Info(0);
         _mint(msg.sender, tokenId);
+    }
+
+    function setBaseURI(string calldata _baseUri) external onlyOwner {
+        baseUri = _baseUri;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseUri;
     }
 
     function _onNotification(
