@@ -8,6 +8,7 @@ contract UsingHexagons is Ownable {
     uint256 public constant ID_TWITTER = 1;
 
     address public lensProtocolModule;
+    mapping (bytes32 => bool) private processedNotificationIds;
 
     constructor() {}
 
@@ -17,12 +18,16 @@ contract UsingHexagons is Ownable {
 
     function notify(
         uint256 _protocolId,
+        uint256 _id,
         address _owner,
         bytes calldata _data,
         bytes calldata _proof
     ) public {
+        bytes32 notificationId = keccak256(abi.encode(_protocolId, _id));
+        require(processedNotificationIds[notificationId] == false, "Request already processed");
         require(_verify(_protocolId, _proof), "Invalid proof");
         _onNotification(_protocolId, _owner, _data);
+        processedNotificationIds[notificationId] = true;
     }
 
     function _onNotification(
