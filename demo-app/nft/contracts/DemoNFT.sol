@@ -55,15 +55,15 @@ contract DemoNFT is ERC721Enumerable, UsingHexagons {
             uint256 tokenId = 0; // FIXME: extract it from _data
             Info storage info = tokenInfo[tokenId];
 
-            if (_contains(data, "blonde")) {
+            if (_contains("blonde", data)) {
                 info.hair = "blonde";
                 return;
             }
-            if (_contains(data, "brown")) {
+            if (_contains("brown", data)) {
                 info.hair = "brown";
                 return;
             }
-            if (_contains(data, "blue")) {
+            if (_contains("blue", data)) {
                 info.hair = "blue";
                 return;
             }
