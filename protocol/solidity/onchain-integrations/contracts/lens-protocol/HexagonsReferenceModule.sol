@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.10;
 
-import {IDemoNFT} from "./interfaces/IDemoNFT.sol";
-import {IReferenceModule} from "./lens/IReferenceModule.sol";
-import {ILensHub} from "./lens/ILensHub.sol";
-import {Constants} from "./libraries/Constants.sol";
+import {IReferenceModule} from "./IReferenceModule.sol";
+import {ILensHub} from "./ILensHub.sol";
+import {IUsingHexagons} from "../interfaces/IUsingHexagons.sol";
+import {Constants} from "../libraries/Constants.sol";
 
 contract HexagonsReferenceModule is IReferenceModule {
     address public token;
@@ -29,9 +29,9 @@ contract HexagonsReferenceModule is IReferenceModule {
         bytes calldata data
     ) external override {
         address owner = ILensHub(hub).getDispatcher(profileId);
-        IDemoNFT(token).sendHexagonsProtocolMessage(
+        IUsingHexagons(token).sendHexagonsProtocolMessage(
             Constants.PROTOCOL_LENS,
-            uint256(keccak256(abi.encode(profileId, profileIdPointed, pubIdPointed))),
+            keccak256(abi.encode(profileId, profileIdPointed, pubIdPointed)),
             owner,
             data,
             ""
