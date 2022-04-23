@@ -71,6 +71,7 @@ contract UsingHexagons is Ownable {
         if (_protocolId == Constants.PROTOCOL_LENS && lensProtocolModules[msg.sender]) {
             return true;
         }
+        // TODO: verify the proof here ...
         return true;
     }
 }
