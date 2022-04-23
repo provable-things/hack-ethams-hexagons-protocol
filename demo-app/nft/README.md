@@ -28,9 +28,9 @@
 Create an __.env__ file with the following fields:
 
 ```
-POLYGON_MAINNET_NODE=
-POLYGONSCAN_API_KEY=
-POLYGON_MAINNET_PRIVATE_KEY=
+ETH_MAINNET_NODE=
+ETHERSCAN_API_KEY=
+ETH_MAINNET_PRIVATE_KEY=
 ```
 
 
@@ -38,11 +38,11 @@ POLYGON_MAINNET_PRIVATE_KEY=
 
 
 ```
-❍ npx hardhat run --network polygon scripts/deploy-script.js
+❍ npx hardhat run --network eth scripts/deploy-script.js
 ```
 
 ### verify
 
 ```
-❍ npx hardhat verify --network polygon DEPLOYED_CONTRACT_ADDRESS "Constructor argument 1"
+❍ npx hardhat verify --network eth DEPLOYED_CONTRACT_ADDRESS "Constructor argument 1"
 ```

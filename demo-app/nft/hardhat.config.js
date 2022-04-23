@@ -20,9 +20,9 @@ module.exports = {
     },
   },
   networks: {
-    polygon: {
-      url: getEnvironmentVariable('POLYGON_MAINNET_NODE'),
-      accounts: [getEnvironmentVariable('POLYGON_MAINNET_PRIVATE_KEY')],
+    eth: {
+      url: getEnvironmentVariable('ETH_MAINNET_NODE'),
+      accounts: [getEnvironmentVariable('ETH_MAINNET_PRIVATE_KEY')],
       gas: 'auto',
       gasPrice: 7e9,
       websockets: true,
@@ -30,7 +30,7 @@ module.exports = {
     },
   },
   etherscan: {
-    apiKey: getEnvironmentVariable('POLYGONSCAN_API_KEY'),
+    apiKey: getEnvironmentVariable('ETHERSCAN_API_KEY'),
   },
   gasReporter: {
     enabled: true,
