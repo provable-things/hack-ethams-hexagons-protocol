@@ -8,9 +8,9 @@ import {Errors} from "./libraries/Errors.sol";
 /**
  * @title UsingHexagons
  *
- * @notice This is the contract that should be used by all those contracts that 
+ * @notice This is the contract that should be used by all those contracts that
  *         want to interact with Hexagons protocol. This protocol is composed of a series
- *         of relayers who are authorized to interact with a contract 
+ *         of relayers who are authorized to interact with a contract
  *         through the use of the sendHexagonsProtocolMessage function.
  */
 contract UsingHexagons is Ownable {
