@@ -124,6 +124,11 @@ def get_stream(config, identity, oracle_module, set):
                 nft = nft_from_username(username)
                 token_id = int(nft['token_id'])
 
+                nft_address = nft['smart_contract']['address']
+                if nft_address.lower() != address.lower():
+                    print(f"Incompatible collection found ({nft_address}), skipping...")
+                    continue
+
                 if nft: 
                     print("The author holds a compatible NFT, continuing...")
                     twitter = 1
@@ -167,7 +172,12 @@ def nft_from_username(username):
     res = requests.get(f"https://api.hexagons.cafe/getNftDetailsByUsername?username={username}").json()
     if "err" in res.keys():
         if username == "stylishbuidler":
-            return { "token_id": 0 }
+            return { 
+                "token_id": 0, 
+                "smart_contract": {
+                    "address": "0x101eC0F3b0ab7E19D3895cCC0d57b6068F72926f" # FIXME: this is a mock
+                } 
+            }
         return None
     else: return res
 
