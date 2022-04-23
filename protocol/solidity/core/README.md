@@ -8,7 +8,7 @@
 
 ## :rocket: How to use it?
 
-```sol
+```js
 pragma solidity ^0.8.10;
 
 import {UsingHexagons} from "@hexagons-protocol/UsingHexagons.sol";
