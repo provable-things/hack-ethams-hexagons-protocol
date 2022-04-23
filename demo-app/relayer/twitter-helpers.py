@@ -71,7 +71,7 @@ def set_rules(delete):
 
 def get_stream(set):
     response = requests.get(
-        "https://api.twitter.com/2/tweets/search/stream", auth=bearer_oauth, stream=True,
+        "https://api.twitter.com/2/tweets/search/stream?tweet.fields=id,author_id", auth=bearer_oauth, stream=True,
     )
     print(response.status_code)
     if response.status_code != 200:
@@ -83,8 +83,24 @@ def get_stream(set):
     for response_line in response.iter_lines():
         if response_line:
             json_response = json.loads(response_line)
+            author_id = json_response['data']['author_id']
+            username = username_from_authorid(author_id)
+            print(username)
+            if username:
+               nft = nft_from_username(username)
+               if nft: print("NFT FOUND!", json.dumps(nft))
             print(json.dumps(json_response, indent=4, sort_keys=True))
 
+
+def nft_from_username(username):
+    res = requests.get("https://api.hexagons.cafe/getNftDetailsByUsername?username=%s" % username).json()
+    if "err" in res.keys(): return None
+    else: return res
+
+def username_from_authorid(author_id):
+   res = requests.post("https://tweeterid.com/ajax.php", data={"input": author_id}).text
+   if res.find("@") > -1: return res.replace("@", "")
+   else: return None
 
 def main():
     rules = get_rules()
