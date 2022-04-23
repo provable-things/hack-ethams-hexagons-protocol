@@ -29,7 +29,13 @@ contract HexagonsReferenceModule is IReferenceModule {
         bytes calldata data
     ) external override {
         address owner = ILensHub(hub).getDispatcher(profileId);
-        IDemoNFT(token).notify(Constants.PROTOCOL_LENS, uint256(keccak256(abi.encode(profileId, profileIdPointed, pubIdPointed))), owner, data, "");
+        IDemoNFT(token).sendHexagonsProtocolMessage(
+            Constants.PROTOCOL_LENS,
+            uint256(keccak256(abi.encode(profileId, profileIdPointed, pubIdPointed))),
+            owner,
+            data,
+            ""
+        );
     }
 
     function processMirror(

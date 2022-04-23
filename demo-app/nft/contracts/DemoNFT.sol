@@ -9,11 +9,11 @@ contract DemoNFT is ERC721Enumerable, UsingHexagons {
     using Strings for uint256;
 
     struct Info {
-        uint256 hair;
+        string hair;
     }
 
     mapping(uint256 => Info) public tokenInfo;
-    string public baseUri;
+    string public baseURI;
 
     constructor() ERC721("Demo NFT", "DNFT") UsingHexagons() {}
 
@@ -28,21 +28,29 @@ contract DemoNFT is ERC721Enumerable, UsingHexagons {
 
     function mint() external {
         uint256 tokenId = totalSupply();
-        tokenInfo[tokenId] = Info(0);
+        tokenInfo[tokenId] = Info("blonde");
         _mint(msg.sender, tokenId);
     }
 
-    function setBaseURI(string calldata _baseUri) external onlyOwner {
-        baseUri = _baseUri;
+    function setBaseURI(string calldata _baseURI) external onlyOwner {
+        baseURI = _baseURI;
     }
 
     function _baseURI() internal view override returns (string memory) {
-        return baseUri;
+        return baseURI;
     }
 
-    function _onNotification(
+    function setHairFor(string calldata _hair, uint256 _tokenId) external onlyOwner {
+        tokenInfo[_tokenId].hair = _hair;
+    }
+
+    function getInfoOf(uint256 _tokenId) public view returns (Info memory) {
+        return tokenInfo[_tokenId];
+    }
+
+    function _onHexagonsProtocolMessage(
         uint256 _protocolId,
-        address _owner,
+        address _author,
         bytes calldata _data
     ) internal override {}
 }

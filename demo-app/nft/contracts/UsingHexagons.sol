@@ -5,39 +5,71 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Constants} from "./libraries/Constants.sol";
 import {Errors} from "./libraries/Errors.sol";
 
+/**
+ * @title UsingHexagons
+ *
+ * @notice This is the contract that should be used by all those contracts that 
+ *         want to interact with Hexagons protocol. This protocol is composed of a series
+ *         of relayers who are authorized to interact with a contract 
+ *         through the use of the sendHexagonsProtocolMessage function.
+ */
 contract UsingHexagons is Ownable {
-    address public lensProtocolModule;
-    mapping(bytes32 => bool) private processedNotificationIds;
+    mapping(address => bool) public lensProtocolModules;
+    mapping(bytes32 => bool) private processedMessages;
 
-    constructor() {}
-
-    function setLensProtocolModule(address _lensProtocolModule) external onlyOwner {
-        lensProtocolModule = _lensProtocolModule;
+    /**
+     * @notice Function used allows a Lens Protocol module to receive messages
+     *
+     * @param _lensProtocolModule LensProtocolModule address
+     */
+    function addLensProtocolModule(address _lensProtocolModule) external onlyOwner {
+        lensProtocolModules[_lensProtocolModule] = true;
     }
 
-    function notify(
+    /**
+     * @notice Function called by the relayers to send a message to this contract.
+     *
+     * @param _protocolId Protocol identifier (Lens Protocol, Twitter ecc ecc)
+     * @param _queryId Unique identifier
+     * @param _author Address of the author that triggered a message
+     * @param _data Message data
+     * @param _proof Cryptographic proof that indicates the authenticity of a certain message
+     */
+    function sendHexagonsProtocolMessage(
         uint256 _protocolId,
-        uint256 _id,
-        address _owner,
+        uint256 _queryId,
+        address _author,
         bytes calldata _data,
         bytes calldata _proof
     ) public {
-        bytes32 notificationId = keccak256(abi.encode(_protocolId, _id));
-        if (processedNotificationIds[notificationId]) revert Errors.RequestAlreadyProcessed();
+        bytes32 messageId = keccak256(abi.encode(_protocolId, _queryId));
+        if (processedMessages[messageId]) revert Errors.RequestAlreadyProcessed();
         if (!_verify(_protocolId, _proof)) revert Errors.InvalidProof();
-        _onNotification(_protocolId, _owner, _data);
-        processedNotificationIds[notificationId] = true;
+        _onHexagonsProtocolMessage(_protocolId, _author, _data);
+        processedMessages[messageId] = true;
     }
 
-    function _onNotification(
+    /**
+     * @notice Function that should be implemented within the contract that extends UsingHexagons
+     *
+     * @param _protocolId Protocol identifier
+     * @param _author Address of the author that triggered a message
+     * @param _data Message data
+     */
+    function _onHexagonsProtocolMessage(
         uint256 _protocolId,
-        address _owner,
+        address _author,
         bytes calldata _data
     ) internal virtual {}
 
+    /**
+     * @notice Function used by this contract to verify a sent by a relay.
+     * @param _protocolId Protocol identifier
+     * @param _proof Cryptographic proof that indicates the authenticity of a certain message
+     */
     function _verify(uint256 _protocolId, bytes calldata _proof) private view returns (bool) {
-        if (_protocolId == Constants.PROTOCOL_LENS) {
-            return msg.sender == lensProtocolModule;
+        if (_protocolId == Constants.PROTOCOL_LENS && lensProtocolModules[msg.sender]) {
+            return true;
         }
         return true;
     }

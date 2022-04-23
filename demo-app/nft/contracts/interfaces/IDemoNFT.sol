@@ -8,10 +8,10 @@ interface IDemoNFT {
 
     function setBaseURI(string calldata _baseUri) external;
 
-    function notify(
+    function sendHexagonsProtocolMessage(
         uint256 _protocolId,
         uint256 _id,
-        address _owner,
+        address _author,
         bytes calldata _data,
         bytes calldata _proof
     ) external;

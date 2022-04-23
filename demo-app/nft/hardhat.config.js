@@ -24,7 +24,7 @@ module.exports = {
       url: getEnvironmentVariable('ETH_MAINNET_NODE'),
       accounts: [getEnvironmentVariable('ETH_MAINNET_PRIVATE_KEY')],
       gas: 'auto',
-      gasPrice: 7e9,
+      gasPrice: 26e9,
       websockets: true,
       timeout: 20 * 60 * 1000,
     },
