@@ -36,4 +36,4 @@ contract YourContract is UsingHexagons {
 
 ## :wrench: Architecture
 
-<img src="./resources/architecture.png" width="900" height="500">
+<img src="./resources/architecture.png">
