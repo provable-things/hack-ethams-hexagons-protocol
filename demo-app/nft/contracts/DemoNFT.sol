@@ -26,6 +26,7 @@ contract DemoNFT is ERC721Enumerable, UsingHexagons {
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, _tokenId.toString(), "/", info.hair)) : "";
     }
 
+    // Mint open to everyone just for testing
     function mint() external {
         uint256 tokenId = totalSupply();
         tokenInfo[tokenId] = Info("blonde");
