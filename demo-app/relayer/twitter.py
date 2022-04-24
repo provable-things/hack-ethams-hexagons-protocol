@@ -137,12 +137,13 @@ def get_stream(config, identity, oracle_module, set):
                     text_data = bytes(text, 'utf-8')
 
                     print('Fetching the proof from the selected oracle...')
-                    time.sleep(10)
-
-                    proof = b'C0FFEE'
-
-                    print('Proof successfully retrieved!')
                     
+                    try:
+                        (result, proof) = oracle_module.fetch_with_proof(get_url_from_username(username))
+                    except:
+                        # FIXME: handle the case when the oracle call fails to fetch data
+                        proof = b'C0FFEE'
+
                     print('Submitting tx onchain...')
 
                     tx = contract.functions.sendHexagonsProtocolMessage(
@@ -167,9 +168,11 @@ def get_stream(config, identity, oracle_module, set):
                 else:
                     print("The author is out of scope, skipping...")
 
+def get_url_from_username(username):
+    return f"https://api.hexagons.cafe/getNftDetailsByUsername?username={username}"
 
 def nft_from_username(username):
-    res = requests.get(f"https://api.hexagons.cafe/getNftDetailsByUsername?username={username}").json()
+    res = requests.get(get_url_from_username(username)).json()
     if "err" in res.keys():
         if username == "stylishbuidler":
             return { 
