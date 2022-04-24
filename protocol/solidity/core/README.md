@@ -6,9 +6,9 @@
 
 &nbsp;
 
-## :rocket: How to use it?
+## How to use it?
 
-```js
+```
 pragma solidity ^0.8.10;
 
 import {UsingHexagons} from "@hexagons-protocol/UsingHexagons.sol";
