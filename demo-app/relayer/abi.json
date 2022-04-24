@@ -1,0 +1,51 @@
+[{
+  "inputs": [
+    {
+      "internalType": "uint256",
+      "name": "_protocolId",
+      "type": "uint256"
+    },
+    {
+      "internalType": "bytes32",
+      "name": "_queryId",
+      "type": "bytes32"
+    },
+    {
+      "internalType": "address",
+      "name": "_author",
+      "type": "address"
+    },
+    {
+      "internalType": "bytes",
+      "name": "_data",
+      "type": "bytes"
+    },
+    {
+      "internalType": "bytes",
+      "name": "_proof",
+      "type": "bytes"
+    }
+  ],
+  "name": "sendHexagonsProtocolMessage",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+}, {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerOf",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+}]
